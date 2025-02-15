@@ -119,7 +119,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
-      {/* {isMobile && disableDesktopOnMobile && (
+      {isMobile && disableDesktopOnMobile && (
         <ActionModal
           isOpen={isMobileRestrictionModalOpen}
           title="Mobile website restriction"
@@ -130,7 +130,7 @@ function App() {
           submitAction={openTelegramBot}
           cancelAction={handleisMobileRestrictionModalClose}
         />
-      )} */}
+      )}
     </div>
   );
 }

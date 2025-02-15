@@ -77,14 +77,14 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
 
             {isMenuOpen && (
               <div className="bg-header-button-bg absolute top-20 right-0 z-50 flex w-[300px] flex-col items-center justify-start rounded-[10px] p-4 transition-all duration-300 md:w-[285px]">
-                {/* {isMobile && !walletId && ( */}
+                {isMobile && !walletId && (
                   <Button
                     className="h-[48px] w-[238px] text-sm md:h-[46px] md:w-[226px] md:text-xs"
                     onClick={handleConnect}
                   >
-                    <span>iuyiuyiuyiuConnect Wallet</span>
+                    <span>Connect Wallet - Mobile</span>
                   </Button>
-                {/* // )} */}
+                 )}
 
                 {walletId && (
                   <div className="relative p-[1px]">
@@ -107,11 +107,11 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
         </div>
       )}
 
-      {/* {!isMobile && !walletId && ( */}
+      {!isMobile && !walletId && (
         <Button variant="primary" size="md" onClick={handleConnect}>
-          <span>Connect Walletyuyguyu </span>
+          <span>Connect Wallet - Desktop</span>
         </Button>
-      {/* // )} */}
+       )}
     </div>
   );
 };
