@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/custom-button/Button';
 import { useWalletStore } from '@/stores/useWalletStore';
+import { useArgentWallet } from '@/hooks/useArgentWallet';
 
 // TODO: Improve this component
 
@@ -9,6 +10,7 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
   const menuRef = useRef(null);
+  const {handleConnect} = useArgentWallet()
 
   const toggleMenu = () => {
     setIsMenuOpen((prevState) => !prevState);
@@ -75,14 +77,14 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
 
             {isMenuOpen && (
               <div className="bg-header-button-bg absolute top-20 right-0 z-50 flex w-[300px] flex-col items-center justify-start rounded-[10px] p-4 transition-all duration-300 md:w-[285px]">
-                {isMobile && !walletId && (
+                {/* {isMobile && !walletId && ( */}
                   <Button
                     className="h-[48px] w-[238px] text-sm md:h-[46px] md:w-[226px] md:text-xs"
-                    onClick={onConnectWallet}
+                    onClick={handleConnect}
                   >
-                    <span>Connect Wallet</span>
+                    <span>iuyiuyiuyiuConnect Wallet</span>
                   </Button>
-                )}
+                {/* // )} */}
 
                 {walletId && (
                   <div className="relative p-[1px]">
@@ -105,11 +107,11 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
         </div>
       )}
 
-      {!isMobile && !walletId && (
-        <Button variant="primary" size="md" onClick={onConnectWallet}>
-          <span>Connect Wallet </span>
+      {/* {!isMobile && !walletId && ( */}
+        <Button variant="primary" size="md" onClick={handleConnect}>
+          <span>Connect Walletyuyguyu </span>
         </Button>
-      )}
+      {/* // )} */}
     </div>
   );
 };
