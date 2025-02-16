@@ -102,7 +102,7 @@ function Header({ onConnectWallet, onLogout }) {
             <div className="relative block lg:hidden">
               <MobDropdownMenu isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
             </div>
-            <WalletSection onConnectWallet={handleConnect} onLogout={onLogout} />
+            <WalletSection onConnectWallet={onConnectWallet} onLogout={onLogout} />
           </div>
         </div>
       </Navigation>

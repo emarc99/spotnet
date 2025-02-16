@@ -6,11 +6,12 @@ import { useArgentWallet } from '@/hooks/useArgentWallet';
 // TODO: Improve this component
 
 const WalletSection = ({ onConnectWallet, onLogout }) => {
+  const { setWalletId, removeWalletId } = useWalletStore();
   const { walletId } = useWalletStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
   const menuRef = useRef(null);
-  const {handleConnect} = useArgentWallet()
+  const {handleConnect} = useArgentWallet(setWalletId)
 
   const toggleMenu = () => {
     setIsMenuOpen((prevState) => !prevState);
@@ -108,7 +109,7 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
       )}
 
       {!isMobile && !walletId && (
-        <Button variant="primary" size="md" onClick={handleConnect}>
+        <Button variant="primary" size="md" onClick={onConnectWallet}>
           <span>Connect Wallet - Desktop</span>
         </Button>
        )}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ArgentWebWallet} from "@argent/webwallet-sdk";
 import { RpcProvider } from "starknet";
+import { notify } from "@/components/layout/notifier/Notifier";
 
 const ARGENT_DUMMY_CONTRACT_ADDRESS = "0x07557a2fbe051e6327ab603c6d1713a91d2cfba5382ac6ca7de884d3278636d7";
 const ARGENT_DUMMY_CONTRACT_ENTRYPOINT = "increase_number";
@@ -12,15 +13,20 @@ const argentWebWallet = ArgentWebWallet.init({
    environment: "sepolia",
    sessionParams: {
       allowedMethods: [
+        // List of contracts/methods allowed to be called by the session key
          {
             contract: ARGENT_DUMMY_CONTRACT_ADDRESS,
             selector: ARGENT_DUMMY_CONTRACT_ENTRYPOINT,
          },
       ],
+      validityDays: 90 // default
    },
+   webwalletUrl: "",
+   paymasterParams: "",
+   provider: ""
 });
 
-export const useArgentWallet = () => {
+export const useArgentWallet = (setWalletId) => {
    const [account, setAccount] = useState(undefined);
    const [isLoading, setIsLoading] = useState(false);
    const [txHash, setTxHash] = useState(undefined);
@@ -43,7 +49,9 @@ export const useArgentWallet = () => {
                   return;
                }
 
+               notify(account)
                setAccount(account);
+               setWalletId(account.address)
                console.log("Callback data", callbackData); // -- custom_callback_string
                console.log("Approval transaction hash", approvalTransactionHash); // -- custom_callback_string
             })
@@ -96,7 +104,7 @@ export const useArgentWallet = () => {
        console.log(sessionAccount);
        setAccount(sessionAccount);
     } catch (err) {
-       console.error(err);
+       console.error("Handle connect error:", err);
     }
  };
 
