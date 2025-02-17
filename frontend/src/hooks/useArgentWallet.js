@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { ArgentWebWallet} from "@argent/webwallet-sdk";
 import { RpcProvider } from "starknet";
@@ -9,8 +11,8 @@ const ARGENT_DUMMY_CONTRACT_ENTRYPOINT = "increase_number";
 const provider = new RpcProvider({});
 
 const argentWebWallet = ArgentWebWallet.init({
-   appName: "hackbot",
-   environment: "sepolia",
+   appName: "Spotnet",
+   environment: "mainnet",
    sessionParams: {
       allowedMethods: [
         // List of contracts/methods allowed to be called by the session key
@@ -21,9 +23,7 @@ const argentWebWallet = ArgentWebWallet.init({
       ],
       validityDays: 90 // default
    },
-   webwalletUrl: "",
-   paymasterParams: "",
-   provider: ""
+   webwalletUrl: "https://web.argent.xyz",
 });
 
 export const useArgentWallet = (setWalletId) => {
@@ -34,22 +34,22 @@ export const useArgentWallet = (setWalletId) => {
    useEffect(() => {
     argentWebWallet
             .connect()
-            .then((res) => {
+            .then((response) => {
                               
-               if (!res) {
+               if (!response) {
                   console.log("Not connected");
+                  notify("Not connected yet")
                   return;
                }
 
-               console.log("Connected to Argent Web Wallet", res);
-               const { account, callbackData, approvalTransactionHash } = res;
+               console.log("Connected to Argent Web Wallet", response);
+               const { account, callbackData, approvalTransactionHash, user } = response;
 
                if (account.getSessionStatus() !== "VALID") {
                   console.log("Session is not valid");
                   return;
                }
 
-               notify(account)
                setAccount(account);
                setWalletId(account.address)
                console.log("Callback data", callbackData); // -- custom_callback_string
@@ -58,7 +58,7 @@ export const useArgentWallet = (setWalletId) => {
             .catch((err) => {
                console.error("Failed to connect to Argent Web Wallet", err);
             });
- }, []);
+   }, []);
 
    const submitTransaction = useCallback(async () => {
       if (!account) {
@@ -68,13 +68,25 @@ export const useArgentWallet = (setWalletId) => {
       setIsLoading(true);
       try {
          const call = {
-            contractAddress: ARGENT_DUMMY_CONTRACT_ADDRESS,
-            entrypoint: ARGENT_DUMMY_CONTRACT_ENTRYPOINT,
-            calldata: ["0x1"],
+            contractAddress: account.address,
+            
+            calldata: [input_data],
          };
+         const { resourceBounds: estimatedResourceBounds } = await account.estimateInvokeFee(call, {
+            version: "0x3",
+         });
+
+         const resourceBounds = {
+            ...estimatedResourceBounds,
+            l1_gas: {
+               ...estimatedResourceBounds.l1_gas,
+               max_amount: "0x28",
+            },
+         };
+
          const { transaction_hash } = await account.execute(call, {
             version: "0x3",
-            // resourceBounds: { ... },
+            resourceBounds,
          });
          setTxHash(transaction_hash);
          await account.waitForTransaction(transaction_hash);
@@ -89,7 +101,7 @@ export const useArgentWallet = (setWalletId) => {
    const handleConnect = async () => {
     try {
        const response =  await argentWebWallet.requestConnection({
-          callbackData: "custom_callback_data",
+         //  callbackData: "custom_callback_data",
           approvalRequests: [
              {
                 tokenAddress: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
@@ -100,13 +112,15 @@ export const useArgentWallet = (setWalletId) => {
           ],
        });
                
-       const { account: sessionAccount } = response
+       const { account: sessionAccount,  } = response
        console.log(sessionAccount);
+       notify(sessionAccount)
        setAccount(sessionAccount);
+       setWalletId(sessionAccount.address);
     } catch (err) {
        console.error("Handle connect error:", err);
     }
  };
 
-   return { account, isLoading, txHash, submitTransaction, handleConnect };
+   return { account, isLoading, txHash, handleConnect, submitTransaction };
 };

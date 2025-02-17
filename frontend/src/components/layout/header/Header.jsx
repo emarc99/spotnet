@@ -8,7 +8,6 @@ import useLockBodyScroll from '@/hooks/useLockBodyScroll';
 import MobDropdownMenu from '@/components/layout/mob-dropdown-menu/MobDropdownMenu';
 import { ReportBugButton } from '@/components/report-button/ReportBugButton';
 import { ReportBugModal } from '@/components/report-modal/ReportBugModal';
-import { useArgentWallet } from '@/hooks/useArgentWallet';
 
 const STICKY_ROUTES = [
   '/overview',
@@ -83,7 +82,6 @@ const LogoSection = () => (
 function Header({ onConnectWallet, onLogout }) {
   const location = useLocation();
   const makeNavStick = STICKY_ROUTES.includes(location.pathname);
-  const {handleConnect} = useArgentWallet()
 
   const { isMenuOpen, toggleMenu, closeMenu } = useMenuHandling(location.pathname);
   const { isModalOpen, openModal, closeModal } = useModalHandling();

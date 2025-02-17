@@ -27,6 +27,8 @@ import { DefiSpringPage } from '@/pages/spotnet/defi-spring/DefiSpring';
 import { AddDeposit } from '@/pages/add-deposit/AddDeposit';
 import Leaderboard from '@/pages/leaderboard/Leaderboard';
 
+
+
 function App() {
   const { setWalletId, removeWalletId } = useWalletStore();
   const [showModal, setShowModal] = useState(false);
@@ -34,6 +36,7 @@ function App() {
   const location = useLocation();
   const [isMobileRestrictionModalOpen, setisMobileRestrictionModalOpen] = useState(true);
   const isMobile = useCheckMobile();
+
 
   const disableDesktopOnMobile = process.env.VITE_APP_DISABLE_DESKTOP_ON_MOBILE !== 'false';
 

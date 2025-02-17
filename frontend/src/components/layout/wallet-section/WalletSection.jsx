@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/custom-button/Button';
 import { useWalletStore } from '@/stores/useWalletStore';
@@ -6,8 +8,7 @@ import { useArgentWallet } from '@/hooks/useArgentWallet';
 // TODO: Improve this component
 
 const WalletSection = ({ onConnectWallet, onLogout }) => {
-  const { setWalletId, removeWalletId } = useWalletStore();
-  const { walletId } = useWalletStore();
+  const { walletId, setWalletId } = useWalletStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1025);
   const menuRef = useRef(null);
@@ -83,7 +84,7 @@ const WalletSection = ({ onConnectWallet, onLogout }) => {
                     className="h-[48px] w-[238px] text-sm md:h-[46px] md:w-[226px] md:text-xs"
                     onClick={handleConnect}
                   >
-                    <span>Connect Wallet - Mobile</span>
+                    <span>Connect Wallet - Telegram</span>
                   </Button>
                  )}
 
