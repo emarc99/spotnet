@@ -6,6 +6,7 @@ import ETH from '../assets/icons/ethereum.svg?react';
 import USDC from '../assets/icons/borrow_usdc.svg?react';
 import STRK from '../assets/icons/strk.svg?react';
 import kSTRK from '../assets/icons/kstrk.svg?react';
+import { handleClearSession } from '@/hooks/useArgentWallet';
 
 const CRM_TOKEN_ADDRESS = '0x051c4b1fe3bf6774b87ad0b15ef5d1472759076e42944fff9b9f641ff13e5bbe';
 
@@ -98,6 +99,7 @@ export const connectWallet = async () => {
 export function logout() {
   localStorage.removeItem('wallet_id');
   disconnect();
+  handleClearSession();
 }
 
 export async function getTokenBalances(walletAddress) {

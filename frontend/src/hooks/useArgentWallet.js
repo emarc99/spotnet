@@ -43,7 +43,7 @@ export const useArgentWallet = (setWalletId) => {
                }
 
                console.log("Connected to Argent Web Wallet", response);
-               const { account, callbackData, approvalTransactionHash, user } = response;
+               const { account, callbackData, approvalTransactionHash} = response;
 
                if (account.getSessionStatus() !== "VALID") {
                   console.log("Session is not valid");
@@ -101,7 +101,7 @@ export const useArgentWallet = (setWalletId) => {
    const handleConnect = async () => {
     try {
        const response =  await argentWebWallet.requestConnection({
-         //  callbackData: "custom_callback_data",
+          callbackData: "custom_callback_data",
           approvalRequests: [
              {
                 tokenAddress: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
@@ -124,3 +124,9 @@ export const useArgentWallet = (setWalletId) => {
 
    return { account, isLoading, txHash, handleConnect, submitTransaction };
 };
+
+export const handleClearSession = async () => {
+   await argentWebWallet.clearSession();
+   setAccount(undefined);
+ };
+ 
